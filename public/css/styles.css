@@ -1,13 +1,51 @@
+.bg-primary {
+    background-color: #e60000 !important;
+}
+
+.text-primary {
+    color:#e60000 !important;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+hr {
+    height: 2px;
+    background-color: #e60000;
+    opacity: 1;
+}
+
+h1 {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    letter-spacing: -2px;
+    font-size: 55px;
+}
+
+#loginCard {
+    width: 400px; 
+    border-radius: 1rem;
+}
+
 nav {
     background-color: #e60000;
 }
 
 footer {
-    background-color: #e60000;
-    color: white;
+    color: #e60000;
     text-align: center;
 }
 
 #otterImg {
     width: 100px;
+}
+
+.redShadow {
+    box-shadow: 0 0.5rem 1rem #aa0000;
 }

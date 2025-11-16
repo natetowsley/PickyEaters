@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include("partials/head.ejs") %>
-    <title>Log In • Picky Eaters</title>
+        <title>Log In • Picky Eaters</title>
 </head>
+
 <body>
-    <h1>Log In</h1>
-    <form>
-        <!-- LOGIN FORM (CHECK DB FOR EXISTING USER + MATCHING PASSWORD) -->
-        <%- include("partials/footer.ejs") %>
-    </form>
+
+    <h1 class="p-5 text-center text-primary">Picky Eaters</h1>
+    <hr class="text-primary">
+    <main class="d-flex justify-content-center align-items-center flex-grow-1">
+        <div id="loginCard" class="container card redShadow p-4 w-40">
+            <h2>Log In</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="TextInput" class="form-label">Username</label>
+                    <input type="textArea" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1">
+                </div>
+                <button type="submit" class="btn btn-dark">Submit</button>
+            </form>
+        </div>
+    </main>
+    <%- include("partials/footer.ejs") %>
 </body>
+
 </html>
