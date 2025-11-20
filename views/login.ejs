@@ -13,20 +13,26 @@
     <main class="d-flex justify-content-center align-items-center flex-grow-1">
         <div id="loginCard" class="container card redShadow p-4 w-40">
             <h2>Log In</h2>
-            <form>
+            <form method="POST" action="/login">
                 <div class="mb-3">
-                    <label for="TextInput" class="form-label">Username</label>
-                    <input type="textArea" class="form-control">
+                    <label class="form-label">Username <span class="bi bi-person loginIcon"></span>
+                        <input autocomplete="username" name="username" type="text" class="form-control" id="usernameInput">
+                        
+                    </label>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <label class="form-label">Password <span class="bi bi-eye loginIcon" id="eyeIcon"></span>
+                        <input autocomplete="current-password" name="password" type="password" class="form-control" id="passwordInput">
+                        
+                    </label>
                 </div>
                 <button type="submit" class="btn btn-dark">Submit</button>
+                <% if (typeof loginError != 'undefined') { %>
+                    <h3 class="text-danger"><%= loginError %></h3>
+                <%}%>
             </form>
         </div>
     </main>
     <%- include("partials/footer.ejs") %>
 </body>
-
 </html>

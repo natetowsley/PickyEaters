@@ -1,5 +1,6 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
+import bcrypt from 'bcrypt';
 
 const app = express();
 
@@ -24,6 +25,32 @@ app.get('/', (req, res) => {
    res.render('login.ejs');
 });
 
+app.post('/login', async (req, res) => {
+    // test username: test
+    // test password: test
+    let username = req.body.username;
+    let password = req.body.password;
+    let hashedPassword = "test";
+
+    // let sql = `SELECT *
+    //             FROM users
+    //             WHERE username = ?`;
+    // const [rows] = await pool.query(sql, [username]);
+
+    // if (rows.length > 0) {
+    //     hashedPassword = rows[0].password;
+    // }
+    // const match = await bcrypt.compare(password, hashedPassword);
+    if (password == hashedPassword) { //TODO: CHANGE TO match LATER
+        res.render('home.ejs');
+    }
+
+    else {
+        res.render('login.ejs', {"loginError": "Invalid Login"});
+    }
+});
+
+//dbTest
 app.get("/dbTest", async(req, res) => {
    try {
         const [rows] = await pool.query("SELECT CURDATE()");
@@ -32,7 +59,7 @@ app.get("/dbTest", async(req, res) => {
         console.error("Database error:", err);
         res.status(500).send("Database error!");
     }
-});//dbTest
+});
 
 app.listen(3000, ()=>{
     console.log("Express server running")
