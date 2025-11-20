@@ -49,3 +49,23 @@ footer {
 .redShadow {
     box-shadow: 0 0.5rem 1rem #aa0000;
 }
+
+.foodCard {
+    height: fit-content;
+}
+
+.foodImg {
+    border-radius: 20px;
+    margin: 30px;
+}
+
+.likeDislikeBtns {
+    align-content: center;
+    width: 100px;
+    height: 50px;
+}
+
+.cardFootRow {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

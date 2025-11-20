@@ -1,12 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include("partials/head.ejs") %>
-    <title>Picky Eaters</title>
+        <title>Picky Eaters</title>
 </head>
+
 <body>
+    <h1 class="p-5 text-center text-primary">Picky Eaters</h1>
     <%- include("partials/nav.ejs") %>
-    
-    <%- include("partials/footer.ejs") %>
+        <p id="usernameText" class="ms-auto m-2">TODO: Change to logged in user's Username</p>
+        <br>
+
+        <main class="d-flex justify-content-center">
+            <div class="foodCard card">
+                <h5 class="card-header text-center">TODO: Change to food name</h5>
+                <div class="text-center card-body">
+                    <label>
+                        <input type="checkbox"> Allergic
+                    </label><br>
+                    <img class="foodImg" src="/img/patty.jpg"><br>
+                    <button type="button" class="btn btn-outline-secondary">Details</button>
+                </div>
+                <div class="container px-4 card-footer">
+                    <div class="cardFootRow text-center row gx-5">
+                        <!-- TODO: Have button be filled in if food already liked/disliked -->
+                        <div class="col">
+                            <a href="#" class="likeDislikeBtns btn btn-outline-danger">Dislike <span
+                                    class="bi bi-hand-thumbs-down"></span></a>
+                        </div>
+                        <div class="col">
+                            <a href="#" class="likeDislikeBtns btn btn-outline-success">Like <span class="bi bi-hand-thumbs-up"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <%- include("partials/footer.ejs") %>
 </body>
+
 </html>
