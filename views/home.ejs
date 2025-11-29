@@ -7,19 +7,24 @@
 </head>
 
 <body>
-    <h1 class="p-5 text-center text-primary">Picky Eaters</h1>
+    <h1 class="p-4 text-center text-primary">Picky Eaters</h1>
     <%- include("partials/nav.ejs") %>
-        <p id="usernameText" class="ms-auto m-2">User: <strong><%=username%></strong></p>
-        <br>
+        <p id="usernameText" class="ms-auto m-2">User: <strong>
+                <%=username%>
+            </strong></p>
 
-        <main class="d-flex justify-content-center">
+
+        <main class="d-flex justify-content-center align-items-center">
+            <button class="btn btn-primary arrows"><span class="bi bi-caret-left-fill"></button>
             <div class="foodCard card">
-                <h5 class="card-header text-center">TODO: Change to food name</h5>
+                <h5 class="card-header text-center">
+                    <%=data.recipes[0].title%>
+                </h5>
                 <div class="text-center card-body">
                     <label>
                         <input type="checkbox"> Allergic
                     </label><br>
-                    <img class="foodImg" src="/img/patty.jpg"><br>
+                    <img class="foodImg" src=<%=data.recipes[0].image%>><br>
                     <button type="button" class="btn btn-outline-secondary">Details</button>
                 </div>
                 <div class="container px-4 card-footer">
@@ -30,13 +35,16 @@
                                     class="bi bi-hand-thumbs-down"></span></a>
                         </div>
                         <div class="col">
-                            <a href="#" class="likeDislikeBtns btn btn-outline-success">Like <span class="bi bi-hand-thumbs-up"></span></a>
+                            <a href="#" class="likeDislikeBtns btn btn-outline-success">Like <span
+                                    class="bi bi-hand-thumbs-up"></span></a>
                         </div>
                     </div>
                 </div>
             </div>
+            <button class="btn btn-primary arrows"><span class="bi bi-caret-right-fill"></button>
         </main>
 
+        <br>
         <%- include("partials/footer.ejs") %>
 </body>
 
