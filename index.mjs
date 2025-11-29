@@ -10,7 +10,7 @@ app.use(session({
   secret: 'cst336',
   resave: false,
   saveUninitialized: true
-//   cookie: { secure: true }
+  //cookie: { secure: true }
 }))
 
 app.set('view engine', 'ejs');
@@ -21,7 +21,7 @@ app.use(express.urlencoded({extended:true}));
 
 //setting up database connection pool
 const pool = mysql.createPool({
-    host: "http://y0nkiij6humroewt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/",
+    host: "y0nkiij6humroewt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     user: "d9cvv58bxafrhnel",
     password: "bc5ohos9yy2khwd1",
     database: "xw40tkj73t4u1dwk",
@@ -73,7 +73,8 @@ app.post('/signup', async (req, res) => {
     let password = req.body.password;
     let hashedPassword = "test";
 
-    let sql = ` INSERT INTO Users (username, password)
+    let sql = ` INSERT INTO Users 
+                (username, password)
                 VALUES (?, ?)`;
     let sqlParams = [username, password];
     const [rows] = await pool.query(sql, []);
