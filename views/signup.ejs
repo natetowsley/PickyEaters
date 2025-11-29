@@ -3,7 +3,7 @@
 
 <head>
     <%- include("partials/head.ejs") %>
-        <title>Log In • Picky Eaters</title>
+        <title>Sign Up • Picky Eaters</title>
 </head>
 
 <body>
@@ -12,8 +12,8 @@
     <hr class="text-primary">
     <main class="d-flex justify-content-center align-items-center flex-grow-1">
         <div id="loginCard" class="container card redShadow p-4 w-40">
-            <h2>Log In</h2>
-            <form method="POST" action="/login">
+            <h2>Sign Up</h2>
+            <form method="POST" action="/signup">
                 <div class="mb-3">
                     <label class="form-label">Username <span class="bi bi-person loginIcon"></span>
                         <input autocomplete="username" name="username" type="text" class="form-control" id="usernameInput">
@@ -22,18 +22,11 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Password <span class="bi bi-eye loginIcon" id="eyeIcon"></span>
-                        <input autocomplete="current-password" name="password" type="password" class="form-control" id="passwordInput">
+                        <input autocomplete="current-password" name="password" type="password" class="form-control" id="passwordInput"><span id="suggest"></span><br>
                     </label>
                 </div>
                 <button type="submit" class="btn btn-dark">Submit</button>
-                <% if (typeof loginError != 'undefined') { %>
-                    <h3 class="text-danger"><%= loginError %></h3>
-                <%}%>
             </form>
-            <form action="/signup">
-                <button>Sign Up</button>
-            </form>
-            
         </div>
     </main>
     <%- include("partials/footer.ejs") %>

@@ -21,10 +21,10 @@ app.use(express.urlencoded({extended:true}));
 
 //setting up database connection pool
 const pool = mysql.createPool({
-    host: "your_hostname",
-    user: "your_username",
-    password: "your_password",
-    database: "your_database",
+    host: "http://y0nkiij6humroewt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/",
+    user: "d9cvv58bxafrhnel",
+    password: "bc5ohos9yy2khwd1",
+    database: "xw40tkj73t4u1dwk",
     connectionLimit: 10,
     waitForConnections: true
 });
@@ -41,16 +41,16 @@ app.post('/login', async (req, res) => {
     let password = req.body.password;
     let hashedPassword = "test";
 
-    // let sql = `SELECT *
-    //             FROM users
-    //             WHERE username = ?`;
-    // const [rows] = await pool.query(sql, [username]);
+    let sql = `SELECT *
+                FROM Users
+                WHERE username = ?`;
+    const [rows] = await pool.query(sql, [username]);
 
-    // if (rows.length > 0) {
-    //     hashedPassword = rows[0].password;
-    // }
-    // const match = await bcrypt.compare(password, hashedPassword);
-    if (password == hashedPassword) { //TODO: CHANGE TO match LATER
+    if (rows.length > 0) {
+        hashedPassword = rows[0].password;
+    }
+    const match = await bcrypt.compare(password, hashedPassword);
+    if (match) { //TODO: CHANGE TO match LATER
         res.render('home.ejs', {username});
     }
 
@@ -62,6 +62,23 @@ app.post('/login', async (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
+});
+app.get('/signUp', (req, res) =>{
+    res.render('signup.ejs');
+})
+app.post('/signup', async (req, res) => {
+    // test username: test
+    // test password: test
+    let username = req.body.username;
+    let password = req.body.password;
+    let hashedPassword = "test";
+
+    let sql = ` INSERT INTO Users (username, password)
+                VALUES (?, ?)`;
+    let sqlParams = [username, password];
+    const [rows] = await pool.query(sql, []);
+    res.render('home.ejs', {username});
+
 });
 
 //dbTest
