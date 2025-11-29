@@ -10,7 +10,7 @@ app.use(session({
   secret: 'cst336',
   resave: false,
   saveUninitialized: true
-//   cookie: { secure: true }
+  //cookie: { secure: true }
 }))
 
 app.set('view engine', 'ejs');
@@ -82,7 +82,8 @@ app.post('/signup', async (req, res) => {
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 10);
 
-    let sql = ` INSERT INTO Users (username, password)
+    let sql = ` INSERT INTO Users 
+                (username, password)
                 VALUES (?, ?)`;
     let sqlParams = [username, hashedPassword];
     const [rows] = await pool.query(sql, sqlParams);
