@@ -91,6 +91,15 @@ app.post('/signup', async (req, res) => {
 
 });
 
+app.post('/preference', async (req, res) => {
+        let username = req.session.username;
+        let recipeId = req.body.recipeId;
+        let preference = req.body.preference;
+        console.log(`Preference received: user=${username} recipeId=${recipeId} preference=${preference}`);
+        // TODO: store preference in DB (not implemented)
+        res.redirect('/home');
+    });
+
 //dbTest
 app.get("/dbTest", async(req, res) => {
    try {

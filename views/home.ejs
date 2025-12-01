@@ -29,15 +29,17 @@
                 </div>
                 <div class="container px-4 card-footer">
                     <div class="cardFootRow text-center row gx-5">
-                        <!-- TODO: Have button be filled in if food already liked/disliked -->
-                        <div class="col">
-                            <a href="#" class="likeDislikeBtns btn btn-outline-danger">Dislike <span
-                                    class="bi bi-hand-thumbs-down"></span></a>
-                        </div>
-                        <div class="col">
-                            <a href="#" class="likeDislikeBtns btn btn-outline-success">Like <span
-                                    class="bi bi-hand-thumbs-up"></span></a>
-                        </div>
+                        <form method="POST" id="prefForm" action="/preference" class="d-flex justify-content-center w-100">
+                            <input type="hidden" name="recipeId" value="<%= data.recipes[0].id %>">
+                            <div class="col">
+                                <input type="radio" class="btn-check" name="preference" id="dislikeRadio" autocomplete="off" value="dislike">
+                                <label class="likeDislikeBtns btn btn-outline-danger" for="dislikeRadio">Dislike <span class="bi bi-hand-thumbs-down"></span></label>
+                            </div>
+                            <div class="col">
+                                <input type="radio" class="btn-check" name="preference" id="likeRadio" autocomplete="off" value="like">
+                                <label class="likeDislikeBtns btn btn-outline-success" for="likeRadio">Like <span class="bi bi-hand-thumbs-up"></span></label>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -46,6 +48,7 @@
 
         <br>
         <%- include("partials/footer.ejs") %>
+        <script src="js/home.js"></script>
 </body>
 
 </html>
