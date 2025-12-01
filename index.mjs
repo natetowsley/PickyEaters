@@ -9,7 +9,7 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(session({
   secret: 'cst336',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false
   //cookie: { secure: true }
 }))
 
@@ -97,7 +97,8 @@ app.post('/preference', async (req, res) => {
         let preference = req.body.preference;
         console.log(`Preference received: user=${username} recipeId=${recipeId} preference=${preference}`);
         // TODO: store preference in DB (not implemented)
-        res.redirect('/home');
+        // res.redirect('/home');
+        // COMMENTED OUT TO AVOID API HITS ^^^^
     });
 
 //dbTest
