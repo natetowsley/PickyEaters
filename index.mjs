@@ -36,9 +36,21 @@ app.get('/', (req, res) => {
 
 app.get('/home', async (req, res) => {
     let username = req.session.username;
-    let url = "https://api.spoonacular.com/recipes/random?number=1&apiKey=d6dff3ba15ec4b89a868a2315bf77b37&includeNutrition=true";
-    let response = await fetch(url);
-    let data = await response.json();
+    // let url = "https://api.spoonacular.com/recipes/random?number=1&apiKey=d6dff3ba15ec4b89a868a2315bf77b37&includeNutrition=true";
+    // let response = await fetch(url);
+    // let data = await response.json();
+
+    // BELOW IS DUMMY DATA TO BE USED WHEN NOT TESTING API (Avoid api hits cap)
+    let data = {
+        recipes : [
+            {
+                "id" : 1000,
+                "title" : "Krabby Patty",
+                "image" : "/img/patty.jpg"
+            }
+
+        ]
+    }
     console.log(data);
     res.render('home.ejs', {username, data});
 
@@ -60,6 +72,7 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, hashedPassword);
     if (match) {
         req.session.username = username; //TODO: CHANGE TO match LATER
+        req.session.userId = rows[0].userId;
         res.redirect('/home');
     }
 
@@ -72,9 +85,11 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
 });
+
 app.get('/signUp', (req, res) =>{
     res.render('signup.ejs');
-})
+});
+
 app.post('/signup', async (req, res) => {
     // test username: test
     // test password: test
@@ -93,12 +108,52 @@ app.post('/signup', async (req, res) => {
 
 app.post('/preference', async (req, res) => {
         let username = req.session.username;
+        let userId = req.session.userId;
         let recipeId = req.body.recipeId;
-        let preference = req.body.preference;
-        console.log(`Preference received: user=${username} recipeId=${recipeId} preference=${preference}`);
+        let isLiked = req.body.preference ? parseInt(req.body.preference) : null;
+        let isAllergic = req.body.isAllergic ? 1 : 0;
+
+        console.log(`Preference received: user=${username} userId=${userId} recipeId=${recipeId} preference=${isLiked} isAllergic=${isAllergic}`);
         // TODO: store preference in DB (not implemented)
         // res.redirect('/home');
         // COMMENTED OUT TO AVOID API HITS ^^^^
+
+        // GET FOOD ID IF FOOD ALREADY EXISTS IN DB
+        let sqlGetFood = `SELECT foodId FROM food WHERE apiId = ?`;
+        let [foodRows] = await pool.query(sqlGetFood, [recipeId]);
+        
+        let foodId;
+        // IF FOOD DOES NOT EXIST ADD TO DB
+        if (foodRows.length === 0) {
+            let sqlInsertFood = `INSERT INTO food (apiId, name, image) VALUES (?, ?, ?)`;
+            let [insertResult] = await pool.query(sqlInsertFood, [
+                recipeId, 
+                req.body.title || 'Unknown',
+                req.body.image || ''
+            ]);
+            foodId = insertResult.insertId; // <-- GRABS AUTO INCREMENTED FIELD (foodId)
+        }
+        else {
+            foodId = foodRows[0].foodId;
+        }
+
+        let sqlPrefCheck = `SELECT * FROM foodToUserConnection 
+                        WHERE userId = ? AND foodId = ?`;
+        const [prefRows] = await pool.query(sqlPrefCheck, [userId, foodId]);
+
+        if (prefRows.length > 0) { // IF PREFERENCES ALREADY EXIST
+            let sqlUpdate = `UPDATE foodToUserConnection
+            SET isLiked = ?, isAllergic = ?
+            WHERE userId = ? AND foodId = ?`;
+            await pool.query(sqlUpdate, [isLiked, isAllergic, userId, foodId]);
+        }
+        else { // INSERT PREFERENCES AS NEW ENTRY
+            let sqlInsert = `INSERT INTO foodToUserConnection
+                             (userId, foodId, isLiked, isAllergic)
+                             VALUES (?, ?, ?, ?)`;
+            await pool.query(sqlInsert, [userId, foodId, isLiked, isAllergic]);
+        }
+        res.redirect('/home');
     });
 
 //dbTest

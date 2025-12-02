@@ -16,39 +16,70 @@
 
         <main class="d-flex justify-content-center align-items-center">
             <button class="btn btn-primary arrows"><span class="bi bi-caret-left-fill"></button>
-            <div class="foodCard card">
-                <h5 class="card-header text-center">
-                    <%=data.recipes[0].title%>
-                </h5>
-                <div class="text-center card-body">
-                    <label>
-                        <input type="checkbox"> Allergic
-                    </label><br>
-                    <img class="foodImg" src=<%=data.recipes[0].image%>><br>
-                    <button type="button" class="btn btn-outline-secondary">Details</button>
-                </div>
-                <div class="container px-4 card-footer">
-                    <div class="cardFootRow text-center row gx-5">
-                        <form method="POST" id="prefForm" action="/preference" class="d-flex justify-content-center w-100">
-                            <input type="hidden" name="recipeId" value="<%= data.recipes[0].id %>">
+            <form method="POST" id="prefForm" action="/preference" class="d-flex justify-content-center w-100">
+                <input type="hidden" name="recipeId" value="<%= data.recipes[0].id %>">
+                <input type="hidden" name="title" value="<%= data.recipes[0].title %>">
+                <input type="hidden" name="image" value="<%= data.recipes[0].image %>">
+                <div class="foodCard card">
+                    <h5 class="card-header text-center">
+                        <%=data.recipes[0].title%>
+                    </h5>
+                    <div class="text-center card-body">
+                        <label>
+                            <input name="isAllergic" type="checkbox"> Allergic
+                        </label><br>
+                        <img class="foodImg" src=<%=data.recipes[0].image%> alt="food image"><br>
+                        <button id="detailsBtn" type="button" class="btn btn-outline-secondary">Details</button>
+                    </div>
+                    <div class="container px-4 card-footer">
+                        <div class="cardFootRow text-center row gx-5">
+
+                            
                             <div class="col">
-                                <input type="radio" class="btn-check" name="preference" id="dislikeRadio" autocomplete="off" value="dislike">
-                                <label class="likeDislikeBtns btn btn-outline-danger" for="dislikeRadio">Dislike <span class="bi bi-hand-thumbs-down"></span></label>
+                                <input type="radio" class="btn-check" name="preference" id="dislikeRadio"
+                                    autocomplete="off" value="0">
+                                <label class="likeDislikeBtns btn btn-outline-danger" for="dislikeRadio">Dislike <span
+                                        class="bi bi-hand-thumbs-down"></span></label>
                             </div>
                             <div class="col">
-                                <input type="radio" class="btn-check" name="preference" id="likeRadio" autocomplete="off" value="like">
-                                <label class="likeDislikeBtns btn btn-outline-success" for="likeRadio">Like <span class="bi bi-hand-thumbs-up"></span></label>
+                                <input type="radio" class="btn-check" name="preference" id="likeRadio"
+                                    autocomplete="off" value="1">
+                                <label class="likeDislikeBtns btn btn-outline-success" for="likeRadio">Like <span
+                                        class="bi bi-hand-thumbs-up"></span></label>
                             </div>
-                        </form>
+                            <div>
+                                <button id="submitBtn" class="btn btn-primary" type="submit">Save Preferences</button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
             <button class="btn btn-primary arrows"><span class="bi bi-caret-right-fill"></button>
         </main>
 
         <br>
+
+        <!-- Modal -->
+        <div id="detailsModal" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Food Information</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="detailsInfo"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <%- include("partials/footer.ejs") %>
-        <script src="js/home.js"></script>
+            <script src="js/home.js"></script>
 </body>
 
 </html>
