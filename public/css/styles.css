@@ -101,19 +101,32 @@ footer {
 
 .profPrefCard {
     margin: 20px;
+    height: 16rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .profCardImg {
-    height: 16rem;
-    width: auto;
+    height: 9rem;
+    width: 100%;
+    object-fit: cover;
+}
+
+.profPrefCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .scroll-col {
     border: solid 2px #e60000;
     border-radius: 10px;
-    max-height: 800px;
-    overflow-y: auto;
-    padding-right: 5px;
+    max-height: 600px;
+    overflow-y: auto; /*prevents cards from leaking out of scrollable column*/
+}
+
+.scroll-col .profPrefCard {
+    margin: 10px;
 }
 
 .scroll-col::-webkit-scrollbar {
