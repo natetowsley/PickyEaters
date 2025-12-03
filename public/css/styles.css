@@ -74,7 +74,7 @@ footer {
     height: fit-content;
 }
 
-.foodImg {
+#foodImg {
     border-radius: 20px;
     margin: 30px;
     width: 40vh;

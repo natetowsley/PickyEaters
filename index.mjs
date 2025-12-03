@@ -36,23 +36,7 @@ app.get('/', (req, res) => {
 
 app.get('/home', async (req, res) => {
     let username = req.session.username;
-    // let url = "https://api.spoonacular.com/recipes/random?number=1&apiKey=d6dff3ba15ec4b89a868a2315bf77b37&includeNutrition=true";
-    // let response = await fetch(url);
-    // let data = await response.json();
-
-    // BELOW IS DUMMY DATA TO BE USED WHEN NOT TESTING API (Avoid api hits cap)
-    let data = {
-        recipes : [
-            {
-                "id" : 1000,
-                "title" : "Krabby Patty",
-                "image" : "/img/patty.jpg"
-            }
-
-        ]
-    }
-    console.log(data);
-    res.render('home.ejs', {username, data});
+    res.render('home.ejs', {username});
 
 });
 
@@ -138,9 +122,6 @@ app.post('/preference', async (req, res) => {
         let isAllergic = req.body.isAllergic ? 1 : 0;
 
         console.log(`Preference received: user=${username} userId=${userId} recipeId=${recipeId} preference=${isLiked} isAllergic=${isAllergic}`);
-        // TODO: store preference in DB (not implemented)
-        // res.redirect('/home');
-        // COMMENTED OUT TO AVOID API HITS ^^^^
 
         // GET FOOD ID IF FOOD ALREADY EXISTS IN DB
         let sqlGetFood = `SELECT foodId FROM food WHERE apiId = ?`;
