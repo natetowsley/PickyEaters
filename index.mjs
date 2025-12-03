@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
    res.render('login.ejs');
 });
 
-app.get('/home', async (req, res) => {
+app.get('/home', isUserAuthenticated, async (req, res) => {
     let username = req.session.username;
     res.render('home.ejs', {username});
 
@@ -57,6 +57,7 @@ app.post('/login', async (req, res) => {
     if (match) {
         req.session.username = username; //TODO: CHANGE TO match LATER
         req.session.userId = rows[0].userId;
+        req.session.isUserAuthenticated = true;
         res.redirect('/home');
     }
 
@@ -90,7 +91,7 @@ app.post('/signup', async (req, res) => {
 
 });
 
-app.get('/profile', async (req, res) => {
+app.get('/profile', isUserAuthenticated, async (req, res) => {
     let username = req.session.username;
     let userId = req.session.userId;
     let sqlGetLikes = `SELECT *
@@ -117,7 +118,7 @@ app.get('/profile', async (req, res) => {
     res.render('profile.ejs', {username, likes, dislikes, allergies});
 });
 
-app.post('/preference', async (req, res) => {
+app.post('/preference', isUserAuthenticated, async (req, res) => {
         let username = req.session.username;
         let userId = req.session.userId;
         let recipeId = req.body.recipeId;
@@ -167,11 +168,53 @@ app.post('/preference', async (req, res) => {
         res.redirect('/home');
     });
 
-app.get('/foods', async (req, res) => {
+app.get('/foods', isUserAuthenticated, async (req, res) => {
    let sql = `SELECT foodId, name, image, summary from food`;
     const [foods] = await pool.query(sql);
     res.render('foods.ejs', {foods});
 });
+
+app.get('/updateFood', isUserAuthenticated, async(req, res) => {
+   let foodId = req.query.foodId;
+    let sql = `SELECT *
+               FROM food
+               WHERE foodId = ?`;
+    const [foodInfo] = await pool.query(sql, [foodId]);
+
+   res.render('updateFood.ejs', {foodId, foodInfo});
+});
+
+app.post('/updateFood', isUserAuthenticated, async(req, res) => {
+    let foodId = req.body.foodId;
+    let name = req.body.name;
+    let summary = req.body.summary;
+    let image = req.body.image;
+
+    console.log(foodId);
+    console.log(name);
+    console.log(summary);
+    console.log(image);
+
+    let sql = `UPDATE food
+              SET name = ?,
+                  summary = ?,
+                  image = ?
+              WHERE foodId = ?`;
+
+    let sqlParams = [name, summary, image, foodId];
+    await pool.query(sql, sqlParams);
+    res.redirect('/foods');
+});
+
+//middleware
+function isUserAuthenticated(req, res, next) {
+    if (req.session.isUserAuthenticated) {
+        next();
+    }
+    else {
+        res.redirect('/');
+    }
+}
 
 //dbTest
 app.get("/dbTest", async(req, res) => {

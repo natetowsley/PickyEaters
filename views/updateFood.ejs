@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head.ejs") %>
+        <title>Update Food</title>
+</head>
+
+<body>
+    <h1 class="text-primary text-center p-5 bg-white">Picky Eaters</h1>
+    <%- include("partials/nav.ejs") %>
+        <br>
+        <form action="/updateFood" method="POST">
+            <div id="editCard" class="card text-center">
+                <div class="card-body">
+                    <h3 class="card-title">Editing: <%=foodInfo[0].name%>
+                    </h3>
+                    <h4 class="card-subtitle mb-2 text-body-secondary">Please make your changes</h4>
+                    <input type="hidden" name="foodId" value="<%=foodId%>">
+                    <h6>ID: <%=foodId%></h6><hr>
+                    <h6>Food:</h6>
+                    <textarea rows="2" cols="30" name="name"><%=foodInfo[0].name%></textarea> <br><br>
+                    <h6>Summary:</h6>
+                    <textarea rows="7" cols="50" name="summary"><%=foodInfo[0].summary%></textarea> <br><br>
+                    <h6>Image:</h6>
+                    <textarea rows="3" cols="30" name="image"><%=foodInfo[0].image%></textarea> <br><br>
+                    <a href="/foods" class="btn btn-secondary">Cancel</a><br><br>
+                    <button type="submit" class="btn btn-primary"> Update Food </button>
+                </div>
+            </div>
+        </form>
+        <%- include("partials/footer.ejs") %>
+</body>
+
+</html>
