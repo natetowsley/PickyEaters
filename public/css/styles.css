@@ -80,6 +80,17 @@ footer {
     width: 40vh;
 }
 
+.foodListBtn {
+    width: 120px;
+    margin: 10px;
+}
+
+.editPageImg {
+    height: 120px;
+    width: 150px;
+    border-radius: 8px;
+}
+
 .likeDislikeBtns {
     align-content: center;
     width: 100px;

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head.ejs") %>
+        <title>Food List • Picky Eaters</title>
+</head>
+
+<body>
+    <h1 class="text-primary text-center p-5 bg-white">Picky Eaters</h1>
+    <%- include("partials/nav.ejs") %>
+    <h2 class="text-center text-primary p-3"> Food List </h2>
+
+        <% for (let i of foods) { %>
+                    <a href="/updateQuote?foodId=<%=i.foodId%>" class="foodListBtn btn btn-primary">Update</a>
+                    <a href="/deleteQuote?foodId=<%=i.foodId%>" class="foodListBtn btn btn-outline-danger">Delete</a>
+                    <img class="editPageImg" src="<%=i.image%>">
+                <p>
+                    <%= i.name %>
+                </p>
+
+                <br>
+                <p>
+                    <%= i.summary %>
+                </p>
+                <br><br>
+            <% } %>
+                <%- include("partials/footer.ejs") %>
+</body>
+
+</html>

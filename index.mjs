@@ -167,6 +167,12 @@ app.post('/preference', async (req, res) => {
         res.redirect('/home');
     });
 
+app.get('/foods', async (req, res) => {
+   let sql = `SELECT foodId, name, image, summary from food`;
+    const [foods] = await pool.query(sql);
+    res.render('foods.ejs', {foods});
+});
+
 //dbTest
 app.get("/dbTest", async(req, res) => {
    try {
