@@ -19,6 +19,7 @@
                 <input type="hidden" name="recipeId">
                 <input type="hidden" name="title">
                 <input type="hidden" name="image">
+                <input type="hidden" name="summary">
                 <div class="foodCard card">
                     <h5 class="card-header text-center"></h5>
                     <div class="text-center card-body">
@@ -63,11 +64,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Food Information</h1>
+                        <h1 class="modal-title fs-5" id="foodModalLabel"></h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div id="detailsInfo"></div>
+                        <div id="detailsInfo">
+                            <p id="foodSummary"></p>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

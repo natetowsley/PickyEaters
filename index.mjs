@@ -96,15 +96,18 @@ app.get('/profile', async (req, res) => {
     let sqlGetLikes = `SELECT *
                        FROM foodToUserConnection
                        NATURAL JOIN food
-                       WHERE userId = ? AND isLiked = 1`;
+                       WHERE userId = ? AND isLiked = 1 
+                       ORDER BY foodId DESC`;
     let sqlGetDislikes = `SELECT *
                           FROM foodToUserConnection
                           NATURAL JOIN food
-                          WHERE userId = ? AND isLiked = 0`;
+                          WHERE userId = ? AND isLiked = 0 
+                          ORDER BY foodId DESC`;
     let sqlGetAllergies = `SELECT *
                            FROM foodToUserConnection
                            NATURAL JOIN food
-                           WHERE userId = ? AND isAllergic = 1`;
+                           WHERE userId = ? AND isAllergic = 1 
+                           ORDER BY foodId DESC`;
 
     const [likes] = await pool.query(sqlGetLikes, [userId]);
     const [dislikes] = await pool.query(sqlGetDislikes, [userId]);
@@ -120,8 +123,10 @@ app.post('/preference', async (req, res) => {
         let recipeId = req.body.recipeId;
         let isLiked = req.body.preference ? parseInt(req.body.preference) : null;
         let isAllergic = req.body.isAllergic ? 1 : 0;
+        let summary = req.body.summary;
 
         console.log(`Preference received: user=${username} userId=${userId} recipeId=${recipeId} preference=${isLiked} isAllergic=${isAllergic}`);
+        console.log(summary);
 
         // GET FOOD ID IF FOOD ALREADY EXISTS IN DB
         let sqlGetFood = `SELECT foodId FROM food WHERE apiId = ?`;
@@ -130,11 +135,12 @@ app.post('/preference', async (req, res) => {
         let foodId;
         // IF FOOD DOES NOT EXIST ADD TO DB
         if (foodRows.length === 0) {
-            let sqlInsertFood = `INSERT INTO food (apiId, name, image) VALUES (?, ?, ?)`;
+            let sqlInsertFood = `INSERT INTO food (apiId, name, image, summary) VALUES (?, ?, ?, ?)`;
             let [insertResult] = await pool.query(sqlInsertFood, [
                 recipeId, 
                 req.body.title || 'Unknown',
-                req.body.image || ''
+                req.body.image || '',
+                req.body.summary || ''
             ]);
             foodId = insertResult.insertId; // <-- GRABS AUTO INCREMENTED FIELD (foodId)
         }
