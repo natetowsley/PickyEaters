@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head.ejs") %>
+        <title>Profile • Picky Eaters</title>
+</head>
+
+<body>
+    <h1 class="p-4 text-center text-primary">Picky Eaters</h1>
+    <%- include("partials/nav.ejs") %>
+        <br>
+        <div id="profCard" class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h2 class="card-title"><strong>Profile</strong></h2>
+                <h4 class="card-subtitle mb-2 text-body-secondary">User: <strong>
+                        <%=username%>
+                    </strong></h4>
+                <button class="btn-primary btn">Change Username</button>
+            </div>
+        </div>
+        <br><br>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <h3 class="text-primary">Likes</h3>
+                    <div class="scroll-col">
+                        <% if (likes.length==0) {%>
+                            <p>No likes to display</p>
+                            <% } %>
+                                <% for(let i of likes) { %>
+                                    <div class="profPrefCard card">
+                                        <img src="<%=i.image%>" class="profCardImg card-img-top">
+                                        <div class="card-body">
+                                            <h6 class="card-text">
+                                                <%=i.name%>
+                                            </h6>
+                                            <p class="bi bi-hand-thumbs-up"></p>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                    </div>
+                </div>
+                <div class="col">
+                    <h3 class="text-primary">Dislikes</h3>
+                    <div class="scroll-col">
+                        <% if (dislikes.length==0) {%>
+                            <p>No dislikes to display</p>
+                            <% } %>
+                                <% for(let i of dislikes) { %>
+                                    <div class="profPrefCard card">
+                                        <img src="<%=i.image%>" class="profCardImg card-img-top">
+                                        <div class="card-body">
+                                            <h6 class="card-text">
+                                                <%=i.name%>
+                                            </h6>
+                                            <p class="bi bi-hand-thumbs-down"></p>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                    </div>
+                </div>
+                <div class="col">
+                    <h3 class="text-primary">Allergies</h3>
+                    <div class="scroll-col">
+                        <% if (allergies.length==0) {%>
+                            <p>No allergies to display</p>
+                            <% } %>
+                                <% for(let i of allergies) { %>
+                                    <div class="profPrefCard card">
+                                        <img src="<%=i.image%>" class="profCardImg card-img-top">
+                                        <div class="card-body">
+                                            <h6 class="card-text">
+                                                <%=i.name%>
+                                            </h6>
+                                            <span class="bi bi-bandaid-fill"></span>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include("partials/footer.ejs") %>
+</body>
+
+</html>

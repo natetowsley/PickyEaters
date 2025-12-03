@@ -94,3 +94,28 @@ footer {
 #submitBtn {
     margin-top: 10px;
 }
+
+#profCard {
+    margin: 0 auto;
+}
+
+.profPrefCard {
+    margin: 20px;
+}
+
+.profCardImg {
+    height: 16rem;
+    width: auto;
+}
+
+.scroll-col {
+    border: solid 2px #e60000;
+    border-radius: 10px;
+    max-height: 800px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.scroll-col::-webkit-scrollbar {
+    width: 8px;             
+}

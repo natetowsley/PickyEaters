@@ -106,6 +106,30 @@ app.post('/signup', async (req, res) => {
 
 });
 
+app.get('/profile', async (req, res) => {
+    let username = req.session.username;
+    let userId = req.session.userId;
+    let sqlGetLikes = `SELECT *
+                       FROM foodToUserConnection
+                       NATURAL JOIN food
+                       WHERE userId = ? AND isLiked = 1`;
+    let sqlGetDislikes = `SELECT *
+                          FROM foodToUserConnection
+                          NATURAL JOIN food
+                          WHERE userId = ? AND isLiked = 0`;
+    let sqlGetAllergies = `SELECT *
+                           FROM foodToUserConnection
+                           NATURAL JOIN food
+                           WHERE userId = ? AND isAllergic = 1`;
+
+    const [likes] = await pool.query(sqlGetLikes, [userId]);
+    const [dislikes] = await pool.query(sqlGetDislikes, [userId]);
+    const [allergies] = await pool.query(sqlGetAllergies, [userId]);
+
+    console.log(likes);
+    res.render('profile.ejs', {username, likes, dislikes, allergies});
+});
+
 app.post('/preference', async (req, res) => {
         let username = req.session.username;
         let userId = req.session.userId;
