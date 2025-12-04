@@ -3,7 +3,7 @@
 
 <head>
     <%- include("partials/head.ejs") %>
-        <title>Update Food</title>
+        <title>Update Food • Picky Eaters</title>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
                     <h4 class="card-subtitle mb-2 text-body-secondary">Please make your changes</h4>
                     <input type="hidden" name="foodId" value="<%=foodId%>">
                     <h6>ID: <%=foodId%></h6><hr>
-                    <h6>Food:</h6>
+                    <h6>Food Name:</h6>
                     <textarea rows="2" cols="30" name="name"><%=foodInfo[0].name%></textarea> <br><br>
                     <h6>Summary:</h6>
                     <textarea rows="7" cols="50" name="summary"><%=foodInfo[0].summary%></textarea> <br><br>

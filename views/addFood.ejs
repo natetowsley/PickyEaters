@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head.ejs") %>
+        <title>Add Custom Food • Picky Eaters</title>
+</head>
+
+<body>
+    <h1 class="text-primary text-center p-5 bg-white">Picky Eaters</h1>
+    <%- include("partials/nav.ejs") %>
+        <br>
+        <form action="/addFood" method="POST">
+            <div id="editCard" class="card text-center">
+                <div class="card-body">
+                    <h3 class="card-title">New Custom Food
+                    </h3>
+                    <h4 class="card-subtitle mb-2 text-body-secondary">Please add details</h4>
+                    <hr>
+                    <h6>Food Name:</h6>
+                    <textarea rows="2" cols="30" name="name"></textarea> <br><br>
+                    <h6>Summary:</h6>
+                    <textarea rows="7" cols="50" name="summary"></textarea> <br><br>
+                    <h6>Image URL:</h6>
+                    <textarea rows="3" cols="30" name="image"></textarea> <br><br>
+                    <div class="text-center row gx-5">
+                        <div class="col">
+                            <input type="radio" class="btn-check" name="preference" id="dislikeRadio2" autocomplete="off"
+                                value="0">
+                            <label class="likeDislikeBtns btn btn-outline-danger" for="dislikeRadio2">Dislike <span
+                                    class="bi bi-hand-thumbs-down"></span></label>
+                        </div>
+                        <div class="col">
+                            <input type="radio" class="btn-check" name="preference" id="likeRadio2" autocomplete="off"
+                                value="1">
+                            <label class="likeDislikeBtns btn btn-outline-success" for="likeRadio2">Like <span
+                                    class="bi bi-hand-thumbs-up"></span></label>
+                        </div>
+                    </div>
+                    <label>
+                            <input name="isAllergic" type="checkbox"> Allergic
+                        </label><br>
+
+                    <br>
+                    <div class="card-footer text-body-secondary">
+                        <a href="/profile" class="btn btn-secondary">Cancel</a><br><br>
+                        <button type="submit" class="btn btn-primary"> Add Food </button>
+                    </div>
+                    
+                </div>
+            </div>
+        </form>
+        <%- include("partials/footer.ejs") %>
+</body>
+
+</html>

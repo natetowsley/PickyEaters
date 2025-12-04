@@ -114,7 +114,6 @@ app.get('/profile', isUserAuthenticated, async (req, res) => {
     const [dislikes] = await pool.query(sqlGetDislikes, [userId]);
     const [allergies] = await pool.query(sqlGetAllergies, [userId]);
 
-    console.log(likes);
     res.render('profile.ejs', {username, likes, dislikes, allergies});
 });
 
@@ -127,7 +126,6 @@ app.post('/preference', isUserAuthenticated, async (req, res) => {
         let summary = req.body.summary;
 
         console.log(`Preference received: user=${username} userId=${userId} recipeId=${recipeId} preference=${isLiked} isAllergic=${isAllergic}`);
-        console.log(summary);
 
         // GET FOOD ID IF FOOD ALREADY EXISTS IN DB
         let sqlGetFood = `SELECT foodId FROM food WHERE apiId = ?`;
@@ -169,7 +167,7 @@ app.post('/preference', isUserAuthenticated, async (req, res) => {
     });
 
 app.get('/foods', isUserAuthenticated, async (req, res) => {
-   let sql = `SELECT foodId, name, image, summary from food`;
+   let sql = `SELECT foodId, name, image, summary from food ORDER BY foodId DESC`;
     const [foods] = await pool.query(sql);
     res.render('foods.ejs', {foods});
 });
@@ -190,11 +188,6 @@ app.post('/updateFood', isUserAuthenticated, async(req, res) => {
     let summary = req.body.summary;
     let image = req.body.image;
 
-    console.log(foodId);
-    console.log(name);
-    console.log(summary);
-    console.log(image);
-
     let sql = `UPDATE food
               SET name = ?,
                   summary = ?,
@@ -204,6 +197,32 @@ app.post('/updateFood', isUserAuthenticated, async(req, res) => {
     let sqlParams = [name, summary, image, foodId];
     await pool.query(sql, sqlParams);
     res.redirect('/foods');
+});
+
+app.get('/addFood', isUserAuthenticated, (req, res) => {
+   res.render('addFood.ejs');
+});
+
+app.post('/addFood', isUserAuthenticated, async (req, res) => {
+    let name = req.body.name;
+    let summary = req.body.summary;
+    let image = req.body.image || "";
+    let isLiked = req.body.preference ? parseInt(req.body.preference) : null;
+    let isAllergic = req.body.isAllergic ? 1 : 0;
+
+    let userId = req.session.userId;
+
+    let sql = `INSERT INTO food (name, summary, image)
+               VALUES (?, ?, ?)`;
+    let sqlParams = [name, summary, image];
+    const [rows] = await pool.query(sql, sqlParams);
+
+    let foodId = rows.insertId; //GETS AUTO INCREMENTING COLUMN (foodId)
+    let sql2 = `INSERT INTO foodToUserConnection (userId, foodId, isLiked, isAllergic) 
+                VALUES (?, ?, ?, ?)`;
+    let sqlParams2 = [userId, foodId, isLiked, isAllergic];
+    await pool.query(sql2, sqlParams2);
+    res.redirect('/profile');
 });
 
 //middleware
