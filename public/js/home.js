@@ -35,6 +35,9 @@ async function getNextRecipe() {
     document.querySelector('input[name="image"]').value = data.recipes[0].image;
     document.querySelector('input[name="summary"]').value = data.recipes[0].summary;
     document.querySelector('#foodImg').src = data.recipes[0].image;
+
+    //Modal Values
+    document.querySelector('#modalImg').src = data.recipes[0].image;
     document.querySelector('#foodModalLabel').textContent = data.recipes[0].title;
     if (data.recipes[0].summary != "") {
         document.querySelector('#foodSummary').textContent = data.recipes[0].summary;

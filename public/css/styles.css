@@ -116,21 +116,11 @@ footer {
 
 .profPrefCard {
     margin: 20px;
-    height: 16rem;
-    display: flex;
-    flex-direction: column;
 }
 
 .profCardImg {
-    height: 9rem;
-    width: 100%;
-    object-fit: cover;
-}
-
-.profPrefCard {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    height: 16rem;
+    width: auto;
 }
 
 .scroll-col {
@@ -148,6 +138,14 @@ footer {
     width: 8px;             
 }
 
+#rankScroll {
+    margin: 0 auto;
+    width: max-content;
+    height: calc(100vh - 200px);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
 .foodListRow {
     border: solid 2px #e60000;
     border-radius: 10px;
@@ -158,4 +156,37 @@ footer {
 #editCard {
     width: 28rem;
     margin:0 auto;
+}
+
+#modalImg {
+    border-radius: 10px;
+    width: 465px;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.rankCard {
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.rankCard-container {
+    width: 900px;
+    margin: 0 auto;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.rank-number {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #e60000;
+    min-width: 100px;
+    text-align: center;
 }
