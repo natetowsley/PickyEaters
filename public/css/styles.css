@@ -141,8 +141,8 @@ footer {
 #rankScroll {
     margin: 0 auto;
     width: max-content;
-    height: calc(100vh - 200px);
-    max-height: 90vh;
+    height: 100vh;
+    max-height: 100vh;
     overflow-y: auto;
 }
 
@@ -177,7 +177,7 @@ footer {
 }
 
 .rankCard-container {
-    width: 900px;
+    width: 600px;
     margin: 0 auto;
     gap: 20px;
     padding: 0 20px;
@@ -189,4 +189,10 @@ footer {
     color: #e60000;
     min-width: 100px;
     text-align: center;
+}
+
+.summary-scroll {
+    max-height: 4.5em;
+    overflow-y: auto;
+    line-height: 1.5em;
 }

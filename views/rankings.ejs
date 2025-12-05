@@ -7,17 +7,18 @@
 </head>
 
 <body>
-    <h1 class="text-primary text-center p-4 bg-white">Picky Eaters</h1>
+    <h1 class="text-primary text-center pt-2 pb-1 bg-white">Picky Eaters</h1>
+    <h5 class="text-secondary text-center pt-0 pb-1 bg-white">Top 30 Rankings</h5>
     <%- include("partials/nav.ejs") %>
-        <h2 class="text-center text-primary p-3"> Global Rankings </h2>
+        <br>
         <div class="scroll-col" id="rankScroll">
-            <% for (let i=0; i < rows.length; i++) { %>
+            <% for (let i=0; i < rows.length && i < 30; i++) { %>
                 <div class="rankCard-container d-flex align-items-stretch mb-3">
                     <div class="rank-number d-flex align-items-center justify-content-center">
                         <%=i + 1%>
                     </div>
                     <div class="rankCard card flex-grow-1">
-                        <img src=<%=rows[i].image%> class="card-img-top">
+                        <img alt="<%=rows[i].name%> image" src=<%=rows[i].image%> class="card-img-top">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
                                 <h5 class="card-title">
@@ -25,9 +26,9 @@
                                 </h5>
                                 <span class="badge bg-primary">Likes: <%=rows[i].totalLikes%></span>
                             </div>
-                            <p class="card-text">
-                                <%=rows[i].summary%>
-                            </p>
+                            <div class="summary-scroll">
+                                <%-rows[i].summary%>
+                            </div>
                         </div>
                     </div>
                 </div>
