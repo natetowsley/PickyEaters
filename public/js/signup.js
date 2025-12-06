@@ -1,4 +1,5 @@
 document.querySelector("#passwordInput").addEventListener("click", suggestedPassword);
+document.querySelector("#").addEventListener("click", inputCheck);
 async function suggestedPassword() {
     console.log("in pass")
     let url = "https://csumb.space/api/suggestedPassword.php?length=8";

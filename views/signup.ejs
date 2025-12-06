@@ -25,6 +25,9 @@
                         <input autocomplete="current-password" name="password" type="password" class="form-control" id="passwordInput"><span id="suggest"></span><br>
                     </label>
                 </div>
+                <% if (information) { %>
+                    <h3 class="text-danger">Username or password not entered</h3>
+                <% } %>
                 <button type="submit" class="btn btn-dark">Submit</button>
             </form>
         </div>

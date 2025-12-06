@@ -23,7 +23,7 @@ app.use(express.urlencoded({extended:true}));
 const pool = mysql.createPool({
     host: "y0nkiij6humroewt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     user: "d9cvv58bxafrhnel",
-    password: "bc5ohos9yy2khwd1",
+    password: "sbcf8gvjldc2bf4y",
     database: "xw40tkj73t4u1dwk",
     connectionLimit: 10,
     waitForConnections: true
@@ -72,7 +72,8 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/signUp', (req, res) =>{
-    res.render('signup.ejs');
+    let information = false;
+    res.render('signup.ejs', {information});
 });
 
 app.post('/signup', async (req, res) => {
@@ -82,6 +83,16 @@ app.post('/signup', async (req, res) => {
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 10);
 
+    if(username.length < 1){
+       let information = true;
+       res.render('signup.ejs', {information}); 
+       return;
+    }
+    if(password.length < 1){
+        let information = true;
+        res.render('signup.ejs', {information});
+        return;
+    }
     let sql = ` INSERT INTO Users 
                 (username, password)
                 VALUES (?, ?)`;
