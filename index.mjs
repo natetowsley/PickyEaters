@@ -7,17 +7,17 @@ const app = express();
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-  secret: 'cst336',
-  resave: false,
-  saveUninitialized: false
-  //cookie: { secure: true }
+    secret: 'cst336',
+    resave: false,
+    saveUninitialized: false
+    //cookie: { secure: true }
 }))
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 //for Express to get values using POST method
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 
 //setting up database connection pool
 const pool = mysql.createPool({
@@ -31,12 +31,12 @@ const pool = mysql.createPool({
 
 //routes
 app.get('/', (req, res) => {
-   res.render('login.ejs');
+    res.render('login.ejs');
 });
 
 app.get('/home', isUserAuthenticated, async (req, res) => {
     let username = req.session.username;
-    res.render('home.ejs', {username});
+    res.render('home.ejs', { username });
 
 });
 
@@ -62,7 +62,7 @@ app.post('/login', async (req, res) => {
     }
 
     else {
-        res.render('login.ejs', {"loginError": "Invalid Login"});
+        res.render('login.ejs', { "loginError": "Invalid Login" });
     }
 });
 
@@ -72,8 +72,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/signUp', (req, res) =>{
-    let information = false;
-    res.render('signup.ejs', {information});
+    res.render('signup.ejs');
 });
 
 app.post('/signup', async (req, res) => {
@@ -125,75 +124,75 @@ app.get('/profile', isUserAuthenticated, async (req, res) => {
     const [dislikes] = await pool.query(sqlGetDislikes, [userId]);
     const [allergies] = await pool.query(sqlGetAllergies, [userId]);
 
-    res.render('profile.ejs', {username, likes, dislikes, allergies});
+    res.render('profile.ejs', { username, likes, dislikes, allergies });
 });
 
 app.post('/preference', isUserAuthenticated, async (req, res) => {
-        let username = req.session.username;
-        let userId = req.session.userId;
-        let recipeId = req.body.recipeId;
-        let isLiked = req.body.preference ? parseInt(req.body.preference) : null;
-        let isAllergic = req.body.isAllergic ? 1 : 0;
-        let summary = req.body.summary;
+    let username = req.session.username;
+    let userId = req.session.userId;
+    let recipeId = req.body.recipeId;
+    let isLiked = req.body.preference ? parseInt(req.body.preference) : null;
+    let isAllergic = req.body.isAllergic ? 1 : 0;
+    let summary = req.body.summary;
 
-        console.log(`Preference received: user=${username} userId=${userId} recipeId=${recipeId} preference=${isLiked} isAllergic=${isAllergic}`);
+    console.log(`Preference received: user=${username} userId=${userId} recipeId=${recipeId} preference=${isLiked} isAllergic=${isAllergic}`);
 
-        // GET FOOD ID IF FOOD ALREADY EXISTS IN DB
-        let sqlGetFood = `SELECT foodId FROM food WHERE apiId = ?`;
-        let [foodRows] = await pool.query(sqlGetFood, [recipeId]);
-        
-        let foodId;
-        // IF FOOD DOES NOT EXIST ADD TO DB
-        if (foodRows.length === 0) {
-            let sqlInsertFood = `INSERT INTO food (apiId, name, image, summary) VALUES (?, ?, ?, ?)`;
-            let [insertResult] = await pool.query(sqlInsertFood, [
-                recipeId, 
-                req.body.title || 'Unknown',
-                req.body.image || '',
-                req.body.summary || ''
-            ]);
-            foodId = insertResult.insertId; // <-- GRABS AUTO INCREMENTED FIELD (foodId)
-        }
-        else {
-            foodId = foodRows[0].foodId;
-        }
+    // GET FOOD ID IF FOOD ALREADY EXISTS IN DB
+    let sqlGetFood = `SELECT foodId FROM food WHERE apiId = ?`;
+    let [foodRows] = await pool.query(sqlGetFood, [recipeId]);
 
-        let sqlPrefCheck = `SELECT * FROM foodToUserConnection 
+    let foodId;
+    // IF FOOD DOES NOT EXIST ADD TO DB
+    if (foodRows.length === 0) {
+        let sqlInsertFood = `INSERT INTO food (apiId, name, image, summary) VALUES (?, ?, ?, ?)`;
+        let [insertResult] = await pool.query(sqlInsertFood, [
+            recipeId,
+            req.body.title || 'Unknown',
+            req.body.image || '',
+            req.body.summary || ''
+        ]);
+        foodId = insertResult.insertId; // <-- GRABS AUTO INCREMENTED FIELD (foodId)
+    }
+    else {
+        foodId = foodRows[0].foodId;
+    }
+
+    let sqlPrefCheck = `SELECT * FROM foodToUserConnection 
                         WHERE userId = ? AND foodId = ?`;
-        const [prefRows] = await pool.query(sqlPrefCheck, [userId, foodId]);
+    const [prefRows] = await pool.query(sqlPrefCheck, [userId, foodId]);
 
-        if (prefRows.length > 0) { // IF PREFERENCES ALREADY EXIST
-            let sqlUpdate = `UPDATE foodToUserConnection
+    if (prefRows.length > 0) { // IF PREFERENCES ALREADY EXIST
+        let sqlUpdate = `UPDATE foodToUserConnection
             SET isLiked = ?, isAllergic = ?
             WHERE userId = ? AND foodId = ?`;
-            await pool.query(sqlUpdate, [isLiked, isAllergic, userId, foodId]);
-        }
-        else { // INSERT PREFERENCES AS NEW ENTRY
-            let sqlInsert = `INSERT INTO foodToUserConnection
+        await pool.query(sqlUpdate, [isLiked, isAllergic, userId, foodId]);
+    }
+    else { // INSERT PREFERENCES AS NEW ENTRY
+        let sqlInsert = `INSERT INTO foodToUserConnection
                              (userId, foodId, isLiked, isAllergic)
                              VALUES (?, ?, ?, ?)`;
-            await pool.query(sqlInsert, [userId, foodId, isLiked, isAllergic]);
-        }
-        res.redirect('/home');
-    });
-
-app.get('/foods', isUserAuthenticated, async (req, res) => {
-   let sql = `SELECT foodId, name, image, summary from food ORDER BY foodId DESC`;
-    const [foods] = await pool.query(sql);
-    res.render('foods.ejs', {foods});
+        await pool.query(sqlInsert, [userId, foodId, isLiked, isAllergic]);
+    }
+    res.redirect('/home');
 });
 
-app.get('/updateFood', isUserAuthenticated, async(req, res) => {
-   let foodId = req.query.foodId;
+app.get('/foods', isUserAuthenticated, async (req, res) => {
+    let sql = `SELECT foodId, name, image, summary from food ORDER BY foodId DESC`;
+    const [foods] = await pool.query(sql);
+    res.render('foods.ejs', { foods });
+});
+
+app.get('/updateFood', isUserAuthenticated, async (req, res) => {
+    let foodId = req.query.foodId;
     let sql = `SELECT *
                FROM food
                WHERE foodId = ?`;
     const [foodInfo] = await pool.query(sql, [foodId]);
 
-   res.render('updateFood.ejs', {foodId, foodInfo});
+    res.render('updateFood.ejs', { foodId, foodInfo });
 });
 
-app.post('/updateFood', isUserAuthenticated, async(req, res) => {
+app.post('/updateFood', isUserAuthenticated, async (req, res) => {
     let foodId = req.body.foodId;
     let name = req.body.name;
     let summary = req.body.summary;
@@ -211,7 +210,7 @@ app.post('/updateFood', isUserAuthenticated, async(req, res) => {
 });
 
 app.get('/addFood', isUserAuthenticated, (req, res) => {
-   res.render('addFood.ejs');
+    res.render('addFood.ejs');
 });
 
 app.post('/addFood', isUserAuthenticated, async (req, res) => {
@@ -236,6 +235,28 @@ app.post('/addFood', isUserAuthenticated, async (req, res) => {
     res.redirect('/profile');
 });
 
+app.get('/rankings', isUserAuthenticated, async (req, res) => {
+    // LEFT JOIN LEARNED AT -> https://www.w3schools.com/sql/sql_join_left.asp
+    let sql = `SELECT 
+               f.foodId,
+               f.name,
+               f.summary,
+               f.image,
+               COUNT(ftuc.isLiked) AS totalLikes
+               FROM food f
+               LEFT JOIN foodToUserConnection ftuc
+               ON f.foodId = ftuc.foodId
+               AND ftuc.isLiked = 1
+               GROUP BY 
+               f.foodId,
+               f.name,
+               f.summary
+               ORDER BY totalLikes DESC;`
+    const [rows] = await pool.query(sql);
+
+    res.render('rankings.ejs', { rows });
+});
+
 //middleware
 function isUserAuthenticated(req, res, next) {
     if (req.session.isUserAuthenticated) {
@@ -247,8 +268,8 @@ function isUserAuthenticated(req, res, next) {
 }
 
 //dbTest
-app.get("/dbTest", async(req, res) => {
-   try {
+app.get("/dbTest", async (req, res) => {
+    try {
         const [rows] = await pool.query("SELECT CURDATE()");
         res.send(rows);
     } catch (err) {
@@ -257,6 +278,6 @@ app.get("/dbTest", async(req, res) => {
     }
 });
 
-app.listen(3000, ()=>{
+app.listen(3000, () => {
     console.log("Express server running")
 })

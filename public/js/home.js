@@ -30,14 +30,18 @@ async function getNextRecipe() {
     console.log(data);
 
     document.querySelector('.card-header').textContent = data.recipes[0].title;
-    document.querySelector('input[name="recipeId"]').value = data.recipes[0].id; // Fixed!
+    document.querySelector('input[name="recipeId"]').value = data.recipes[0].id;
     document.querySelector('input[name="title"]').value = data.recipes[0].title;
     document.querySelector('input[name="image"]').value = data.recipes[0].image;
+    document.querySelector('input[name="image"]').alt = data.recipes[0].title + "image";
     document.querySelector('input[name="summary"]').value = data.recipes[0].summary;
     document.querySelector('#foodImg').src = data.recipes[0].image;
+
+    //Modal Values
+    document.querySelector('#modalImg').src = data.recipes[0].image;
     document.querySelector('#foodModalLabel').textContent = data.recipes[0].title;
     if (data.recipes[0].summary != "") {
-        document.querySelector('#foodSummary').textContent = data.recipes[0].summary;
+        document.querySelector('#foodSummary').innerHTML = data.recipes[0].summary;
     }
     else {
         document.querySelector('#foodSummary').textContent = "No summary for this food";
