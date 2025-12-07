@@ -72,7 +72,8 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/signUp', (req, res) =>{
-    res.render('signup.ejs');
+    let information = false;
+    res.render('signup.ejs', {information});
 });
 
 app.post('/signup', async (req, res) => {
